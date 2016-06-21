@@ -15,6 +15,11 @@ heads={
     'Accept-Language':'zh-CN,en-US;q=0.8',
     'Cookie':'_v=5yRwPMVbpfK720aL_fyEUpWsWO51kxBjTodfHgzHSFJIwfFZbsKtlpMsUd0gzcwzmXTjU02N-J9K__C18STjSXlYSfXbddQOTfUH5qEfvTFrwZhlZxSys9pG5eoWCwbTchtaq-xtJjayCuGHnqVDjAKCzeLLETXv3JdbAi5F57PP; _t=24407965; _q=U.qunarppb_1406908251; _gid=1f0fe34d-154f9afa9f8-931f4ac658af18fecdadd8915186b8f1',
 }
+def localTime(s):
+    s=s[:len(s)-3]
+    ltime=time.localtime(int(s))
+    timeStr=time.strftime("%Y-%m-%d", ltime)
+    return timeStr
 def proData(allOrderSet,jsonData):
     for i in range(len(jsonData)):
         allOrderSet.add((int(jsonData[i]['orderNo']),'wwwqunar',jsonData[i]['customerNames'],jsonData[i]['fromDate'],jsonData[i]['toDate']
@@ -27,7 +32,7 @@ def saveInSqllite(allOrderSet):
     # 执行一条SQL语句，创建user表:
     try:
         cursor.execute('create table qunar (orderNo int primary key,title varchar(20), contactName varchar(20),'
-                   'fromDate varchar(20),toDate varchar(20),roomName varchar(20),roomNum varchar(20)  )')
+                   'fromDate varchar(20),toDate varchar(20),roomName varchar(20),roomNum varchar(20),isVisit varchar(20))')
     except:print('表已存在！')
     cursor.execute('select * from qunar')
     # 获得查询结果集:
@@ -38,8 +43,9 @@ def saveInSqllite(allOrderSet):
             if(i[0] in j):
                 isIn=True
         if(not isIn):
-            sqlStr='insert into qunar (orderNo,title,contactName,fromDate,toDate,roomName,roomNum) values ('+str(i[0])\
-                   +',\''+str(i[1])+'\',\''+str(i[2])+'\',\''+str(i[3])+'\',\''+str(i[4])+'\',\''+str(i[5])+'\',\''+str(i[6])+'\')'
+            sqlStr='insert into qunar (orderNo,title,contactName,fromDate,toDate,roomName,roomNum,isVisit) values ('+str(i[0])\
+                   +',\''+str(i[1])+'\',\''+str(i[2])+'\',\''+localTime(str(i[3]))+'\',\''+localTime(str(i[4]))+'\',\''+str(i[5])+'\',\''+str(i[6])+'\',\''+'1'+'\')'
+            print(sqlStr)
             cursor.execute(sqlStr)
             print('添加成功:'+str(i))
         else:
@@ -78,3 +84,4 @@ while(True):
             break
         time.sleep(10)
     time.sleep(60*1)
+    
