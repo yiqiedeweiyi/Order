@@ -84,4 +84,3 @@ while(True):
             break
         time.sleep(10)
     time.sleep(60*1)
-    
