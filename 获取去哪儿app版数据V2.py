@@ -32,7 +32,7 @@ def saveInSqllite(allOrderSet):
     # 执行一条SQL语句，创建user表:
     try:
         cursor.execute('create table qunar (orderNo int primary key,title varchar(20), contactName varchar(20),'
-                   'fromDate varchar(20),toDate varchar(20),roomName varchar(20),roomNum varchar(20),isVisit varchar(20))')
+                   'fromDate varchar(20),toDate varchar(20),roomName varchar(20),roomNum varchar(20),isVisit varchar(20),isProcess varchar(20))')
     except:print('表已存在！')
     cursor.execute('select * from qunar')
     # 获得查询结果集:
@@ -43,8 +43,8 @@ def saveInSqllite(allOrderSet):
             if(i[0] in j):
                 isIn=True
         if(not isIn):
-            sqlStr='insert into qunar (orderNo,title,contactName,fromDate,toDate,roomName,roomNum,isVisit) values ('+str(i[0])\
-                   +',\''+str(i[1])+'\',\''+str(i[2])+'\',\''+localTime(str(i[3]))+'\',\''+localTime(str(i[4]))+'\',\''+str(i[5])+'\',\''+str(i[6])+'\',\''+'1'+'\')'
+            sqlStr='insert into qunar (orderNo,title,contactName,fromDate,toDate,roomName,roomNum,isVisit,isProcess) values ('+str(i[0])\
+                   +',\''+str(i[1])+'\',\''+str(i[2])+'\',\''+localTime(str(i[3]))+'\',\''+localTime(str(i[4]))+'\',\''+str(i[5])+'\',\''+str(i[6])+'\',\''+'1'+'\',\''+'1'+'\')'
             print(sqlStr)
             cursor.execute(sqlStr)
             print('添加成功:'+str(i))
